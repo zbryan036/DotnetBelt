@@ -72,9 +72,20 @@ namespace DotnetBelt.Controllers {
         public IActionResult Leave(int id) {
             if(!LoggedIn()) return View("Login");
             int LUID = (int)HttpContext.Session.GetInt32("LUID");
-            if(context.Plans.Any(p => p.UserId == LUID && p.OccurrenceId == id)) return RedirectToAction("Index");
+            if(!context.Plans.Any(p => p.UserId == LUID && p.OccurrenceId == id)) return RedirectToAction("Index");
             Plan P = context.Plans.Where(r => r.OccurrenceId == id).FirstOrDefault(r => r.UserId == LUID);
             context.Remove(P);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet("{id}/delete")]
+        public IActionResult Delete(int id) {
+            if(!LoggedIn()) return View("Login");
+            Occurrence O = context.Occurrences.FirstOrDefault(o => o.OccurrenceId == id);
+            if(O.GetType() == typeof(User) && HttpContext.Session.GetInt32("LUID") == O.Creator.UserId) {
+                return RedirectToAction("Index");
+            }
+            context.Remove(O);
             context.SaveChanges();
             return RedirectToAction("Index");
         }
