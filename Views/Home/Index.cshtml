@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dojo Activity Center</h1>
+    <div>
+        <a href="/logout">Log Out</a> |
+        <a href="/newoccurrence">New Activity</a>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Activity</th>
+            <th>Date & Time</th>
+            <th>Duration</th>
+            <th>Event Coordinator</th>
+            <th># of Participants</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (Occurrence o in ViewBag.Occurrences) {
+            <tr>
+                <td><a href="/occurrences/@o.OccurrenceId">@o.Title</a></td>
+                <td>@o.OTime.ToString("hh:mm tt, dd/M/yyyy")</td>
+                <td>@o.Duration @o.DurationUnit</td>
+                <td>@o.Creator.Name</td>
+                <td>@o.Plans.Count</td>
+                @{
+                    bool attending = false;
+                    foreach(Plan p in ViewBag.ActiveUser.Plans) {
+                        if(p.O == o) {
+                            attending = true;
+                            break;
+                        }
+                    }
+                }
+                <td>
+                    @if(o.Creator == ViewBag.ActiveUser) {
+                        <a href="@o.OccurrenceId/delete">Delete</a>
+                    } else if(attending) {
+                        <a href="@o.OccurrenceId/leave">Leave</a>
+                    } else {
+                        <a href="@o.OccurrenceId/join">Join</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

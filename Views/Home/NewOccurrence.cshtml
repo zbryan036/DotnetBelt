@@ -1,0 +1,63 @@
+@model Occurrence
+@{
+    ViewData["Title"] = "New Activity";
+}
+<div class="Container">
+    <div class="row" style="margin-top:50px">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h2 class="display-4">Plan Your Event</h2>
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-7"></div>
+        <div class="col-1">
+            <a href="/">Dashboard </a>
+        </div>
+        <div class="col-2">
+            <a href="/logout"> Log Out</a>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <form asp-action="CreateOccurrence" method="post">
+                <div class="form-group">
+                    <span asp-validation-for="Title"></span>
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="OTime"></span>
+                    <label asp-for="OTime"></label>
+                    <input asp-for="OTime" class="form-control">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="Duration"></span>
+                    <label asp-for="Duration"></label>
+                    <input asp-for="Duration">
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="DurationUnit"></span>
+                    <label asp-for="DurationUnit"></label>
+                    <select asp-for="DurationUnit">
+                        <option value="Minutes">Minutes</option>
+                        <option value="Hours">Hours</option>
+                        <option value="Days">Days</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="Description"></span>
+                    <label asp-for="Description"></label>
+                    <input asp-for="Description" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>

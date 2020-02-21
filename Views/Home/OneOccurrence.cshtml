@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = ViewBag.Occurrence.Title;
+}
+<div class="Container">
+    <div class="row" style="margin-top:50px">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h2 class="display-5">@ViewBag.Occurrence.Title</h2>
+        </div>
+        <div class="col-1">
+            <a href="/">Dashboard </a>
+        </div>
+        <div class="col-2">
+            <a href="/logout"> Log Out</a>
+        </div>
+        <div class="row">
+            <div>
+                <p>Description: </p>
+                <p>@ViewBag.Occurrence.Description</p>
+                <p>Date & Time: @ViewBag.Occurrence.OTime.ToString("hh:mm tt, dd/M/yyyy")</p>
+                <p>Participants: </p>
+                <ul>
+                    @foreach(Plan p in ViewBag.Occurrence.Plans) {
+                        <li>@p.U.Name</li>
+                    }
+                </ul>
+                @{
+                    bool attending = false;
+                    foreach(Plan p in ViewBag.ActiveUser.Plans) {
+                        if(p.O == ViewBag.Occurrence) {
+                            attending = true;
+                            break;
+                        }
+                    }
+                }
+                <p>
+                    @if(ViewBag.Occurrence.Creator == ViewBag.ActiveUser) {
+                        <a href="@ViewBag.Occurrence.OccurrenceId/delete">Delete</a>
+                    } else if(attending) {
+                        <a href="@ViewBag.Occurrence.OccurrenceId/leave">Leave</a>
+                    } else {
+                        <a href="@ViewBag.Occurrence.OccurrenceId/join">Join</a>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
